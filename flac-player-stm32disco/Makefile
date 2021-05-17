@@ -1,3 +1,5 @@
+# generated makefile with help of https://github.com/duro80/Makefile4CubeMX?fbclid=IwAR3Dsr90cgwaRnMR4vw0n6t4CD-8AUt3FfFGtnMh8wwuV-Wna3lrD9pR-x8
+
 TARGET = jezap_sikor_flac
 DEBUG = 1
 OPT = -Og
@@ -100,13 +102,13 @@ LIBFLAC/src/libFLAC/lpc.c \
 LIBFLAC/src/libFLAC/md5.c \
 LIBFLAC/src/libFLAC/memory.c \
 LIBFLAC/src/libFLAC/fixed.c \
-core/src/stm32f476g-disco-input_stream.c \
-core/src/stm32f476g-disco-flac.c \
-core/src/stm32f476g-disco-flac_buffer.c \
-core/src/stm32f476g-disco-screen.c \
-core/src/stm32f476g-disco-files.c \
-core/src/stm32f476g-disco-player.c \
-core/src/stm32f476g-disco-controller.c
+core/src/stm32f476g-disco-LJMS-flac_input_stream.c \
+core/src/stm32f476g-disco-LJMS-flac.c \
+core/src/stm32f476g-disco-LJMS-flac_frame_buffer.c \
+core/src/stm32f476g-disco-LJMS-flac_screen.c \
+core/src/stm32f476g-disco-LJMS-flac_search_files.c \
+core/src/stm32f476g-disco-LJMS-flac_player.c \
+core/src/stm32f476g-disco-LJMS-flac_main.c
 
 C_SOURCES += $(PROJECT_SRC)
 

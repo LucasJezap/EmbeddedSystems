@@ -59,7 +59,7 @@
 #include <term_io.h>
 #include <stm32746g_discovery_lcd.h>
 #include <stm32746g_discovery_ts.h>
-#include "stm32f476g-disco-controller.h"
+#include "stm32f476g-disco-LJMS-flac_main.h"
 
 /* USER CODE END Includes */
 
@@ -1398,7 +1398,7 @@ void StartDefaultTask(void const * argument)
 
   /* USER CODE BEGIN 5 */
 
-  Controller_Task();
+  main_task();
 
   /* USER CODE END 5 */ 
 }

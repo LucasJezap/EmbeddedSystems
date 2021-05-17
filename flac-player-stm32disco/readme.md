@@ -33,23 +33,23 @@ stm32-flac-player/
 ├── docs/        ── dokumentacja
 ├── core/        ── główne moduły projektu
 │   ├── include/
-│   │   ├── stm32f476g-disco-controller.h
-│   │   ├── stm32f476g-disco-files.h
-│   │   ├── stm32f476g-disco-flac.h
-│   │   ├── stm32f476g-disco-flac_buffer.h
-│   │   ├── stm32f476g-disco-input_stream.h
+│   │   ├── stm32f476g-disco-LJMS-main.h
+│   │   ├── stm32f476g-disco-LJMS-search_files.h
+│   │   ├── stm32f476g-disco-LJMS-flac.h
+│   │   ├── stm32f476g-disco-LJMS-flac_buffer.h
+│   │   ├── stm32f476g-disco-LJMS-input_stream.h
 │   │   ├── log.h
-│   │   ├── stm32f476g-disco-player.h
-│   │   └── stm32f476g-disco-screen.h
+│   │   ├── stm32f476g-disco-LJMS-player.h
+│   │   └── stm32f476g-disco-LJMS-screen.h
 │   └── src/
-│       ├── stm32f476g-disco-controller.c
-│       ├── stm32f476g-disco-files.c
-│       ├── stm32f476g-disco-flac.c
-│       ├── stm32f476g-disco-flac_buffer.c
-│       ├── stm32f476g-disco-input_stream.c
+│       ├── stm32f476g-disco-LJMS-main.c
+│       ├── stm32f476g-disco-LJMS-search_files.c
+│       ├── stm32f476g-disco-LJMS-flac.c
+│       ├── stm32f476g-disco-LJMS-flac_buffer.c
+│       ├── stm32f476g-disco-LJMS-input_stream.c
 │       ├── log.c
-│       ├── stm32f476g-disco-player.c
-│       └── stm32f476g-disco-screen.c
+│       ├── stm32f476g-disco-LJMS-player.c
+│       └── stm32f476g-disco-LJMS-screen.c
 ├── libflac/     ── biblioteka libFLAC
 ├── Drivers/     ┐
 ├── Middlewares/ ├─ biblioteki ST (HAL, BSP), FreeRTOS
@@ -182,7 +182,7 @@ Przycisk uznany zostaje za naciśnięty lub zwolniony jeśli jego stan dotknięc
 Powyższe rozwarzania zrealizowane zostały w ramach modułu `Screen`:
 
 ```c
-/* core/include/stm32f476g-disco-screen.h */
+/* core/include/stm32f476g-disco-LJMS-screen.h */
 
 // Zainicjalizuj wyświetlacz i dotyk
 void Screen_Initialize(void);
@@ -211,7 +211,7 @@ bool Screen_IsNextButtonTouched(void);
 ## `Files` - moduł wyszukiwania plików FLAC
 
 ```c
-/* core/include/stm32f476g-disco-files.h */
+/* core/include/stm32f476g-disco-LJMS-search_files.h */
 
 typedef struct {
     char files[MAX_FILES_COUNT][MAX_FILE_PATH_LENGTH + 1];
@@ -230,7 +230,7 @@ Do przeglądania katalogów wykorzystywane są funkcje `f_opendir` i `f_readdir`
 ## `InputStream` - moduł strumienia wejściowego z pliku
 
 ```c
-/* core/include/stm32f476g-disco-input_stream.h */
+/* core/include/stm32f476g-disco-LJMS-input_stream.h */
 
 InputStream InputStream_InitWithFile(FIL *file);
 int InputStream_Read(InputStream *self, void *buf, int len);
@@ -335,7 +335,7 @@ FLAC__StreamDecoderWriteStatus DecoderWriteCallback(
 W oparciu o dekoder z biblioteki libFLAC stworzony został moduł `Flac`, który enkapsuluje skomplikowane API oparte o callbacki i udostępnia prostrzy wysokopoziomowy interfejs:
 
 ```c
-/* core/include/stm32f476g-disco-flac.h */
+/* core/include/stm32f476g-disco-LJMS-flac.h */
 
 typedef struct Flac Flac;
 
@@ -344,7 +344,7 @@ typedef struct {
     unsigned channels;
     unsigned bits_per_sample;
     uint64_t total_samples;
-} FlacInfo;
+} FlacMetadata;
 
 typedef struct {
     uint8_t *buffer;
@@ -354,7 +354,7 @@ typedef struct {
 
 Flac *Flac_New(InputStream *input);
 void Flac_Destroy(Flac *flac);
-bool Flac_ReadMetadata(Flac *flac, /*out*/ FlacInfo *info);
+bool Flac_ReadMetadata(Flac *flac, /*out*/ FlacMetadata *info);
 bool Flac_ReadFrame(Flac *flac, /*out*/ FlacFrame **frame);
 void FlacFrame_Destroy(FlacFrame *frame);
 ```
@@ -362,7 +362,7 @@ void FlacFrame_Destroy(FlacFrame *frame);
 ## `FlacBuffer` - moduł buforowania zdekodowanych ramek FLAC
 
 ```c
-/* core/include/stm32f476g-disco-flac_buffer.h */
+/* core/include/stm32f476g-disco-LJMS-flac_buffer.h */
 
 FlacBuffer FlacBuffer_New(Flac* flac);
 void FlacBuffer_Destroy(FlacBuffer* self);
@@ -474,7 +474,7 @@ odtwarzany fragment
 Moduł `Player` zapewnia wysokopoziomowe API do sterowania odtwarzaniem plików:
 
 ```c
-/* core/include/stm32f476g-disco-player.h */
+/* core/include/stm32f476g-disco-LJMS-player.h */
 
 typedef enum {
     PlayerState_Stopped,
@@ -526,7 +526,7 @@ Następnie wykonywana jest główna nieskończona pętla aplikacji:
 for (;;) {
     Screen_HandleTouch();
     Screen_RenderPlayer(
-        /*number_of_files*/ stm32f476g-disco-files.count,
+        /*number_of_files*/ stm32f476g-disco-LJMS-search_files.count,
         /*current_file_index*/ current_file_index,
         /*current_file_name*/ files.files[current_file_index],
         /*progress*/ Player_GetProgress(),
@@ -548,7 +548,7 @@ for (;;) {
 Moduł kontrolera posiada tylko jedną publiczną funkcją - po jej wywołaniu kontroler przejmuję kontrolę na wykonaniem programu:
 
 ```c
-/* core/include/stm32f476g-disco-controller.h */
+/* core/include/stm32f476g-disco-LJMS-main.h */
 
 void Controller_Task(void);
 ```
