@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "cmsis_os.h": "c",
+        "stm32746g_discovery_audio.h": "c"
+    }
+}

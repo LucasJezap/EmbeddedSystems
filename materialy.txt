@@ -1,0 +1,3 @@
+https://gist.github.com/postspectacular/61f17333c17b0206a73e4591cd5ce59b
+https://github.com/duro80/Makefile4CubeMX
+https://documentation.help/STM32F429I-Discovery-BSP-Drivers/
